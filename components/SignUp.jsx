@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from "react";
 import styled from "styled-components/native";
-import { Button, View } from "react-native";
+import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { useDispatch } from "react-redux";
+import { authSignUp } from "../features/usersSlice";
 
 const Post = styled.SafeAreaView`
   flex: 1;
@@ -23,14 +25,12 @@ const TextReg = styled.Text`
   margin: 10px auto;
 `;
 const TextInputReg = styled.TextInput`
-  border: 1px solid gray;
   box-shadow: 15px 10px 4px black;
-  width: 90%;
   padding: 10px;
   margin-top: 20px;
   border-radius: 5px;
   font-size: 20px;
-  border-bottom: 1px;
+  border-bottom-width: 1px;
 `;
 const ViewBtnReg = styled.View`
   background-color: #23e8b3;
@@ -40,47 +40,79 @@ const ViewBtnReg = styled.View`
   border-radius: 10px;
 `;
 
-const SignUp = () => {
+const SignUp = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [email, onChangeEmail] = React.useState("");
-    const [firstName, onChangeFirstName] = React.useState("");
-    const [lastName, onChangeLastName] = React.useState("");
-    const [password, onChangePassword] = React.useState("");
+  const dispatch = useDispatch()
 
-    return (
+  function handleEamil(e) {
+    setEmail(e.target.value);
+  }
+
+  function handleFirstName(e) {
+    setFirstName(e.target.value);
+  }
+
+  function handleLastName(e) {
+    setLastName(e.target.value);
+  }
+
+  function handlePassword(e) {
+    setPassword(e.target.value);
+  }
+
+  function handleSubmit(e){
+    e.preventDefault();
+    dispatch(authSignUp({ firstName, lastName, email, password }))
+  }
+
+  return (
     <Post>
       <FormReg>
         <TextReg>Регистрация</TextReg>
         <TextInputReg
-          onChangeText={onChangeEmail}
+          onChangeText={setEmail}
           placeholder="Email"
           value={email}
+          onChange={handleEamil}
         />
+        <TextInput />
         <TextInputReg
-          onChangeText={onChangeFirstName}
+          onChangeText={setFirstName}
           placeholder="Имя"
           value={firstName}
+          onChange={handleFirstName}
         />
         <TextInputReg
-          onChangeText={onChangeLastName}
+          onChangeText={setLastName}
           placeholder="Фамилия"
           value={lastName}
+          onChange={handleLastName}
         />
         <TextInputReg
-          onChangeText={onChangePassword}
+          onChangeText={setPassword}
           value={password}
           placeholder="Password"
-          keyboardType="numeric"
+          onChange={handlePassword}
         />
 
         <ViewBtnReg>
-          <Button title="Зарегестрироваться" color='white'  />
+          <TouchableOpacity onPress={handleSubmit}>
+            <Text>Отправить</Text>
+          </TouchableOpacity>
         </ViewBtnReg>
+        <ViewBtnReg>
+          <Button title="Зарегестрироваться" color='white' onPress={() => navigation.navigate('Home')}  />
+        </ViewBtnReg>
+        <Button title="Уже есть аккаунт?" color="blue" onPress={() => navigation.navigate('SignIn') } />
       </FormReg>
 
       <StatusBar style="auto" />
     </Post>
-    );
+  );
 };
 
 export default SignUp;

@@ -1,0 +1,17 @@
+import React from 'react';
+import { Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+const Albums = () => {
+    return (
+        <SafeAreaView>
+            <Text>fjlaskfjlasdkfasdlkf</Text>
+            <Text>fjlaskfjlasdkfasdlkf</Text>
+            <Text>fjlaskfjlasdkfasdlkf</Text>
+            <Text>fjlaskfjlasdkfasdlkf</Text>
+            <Text>fjlaskfjlasdkfasdlkf</Text>
+        </SafeAreaView>
+    );
+};
+
+export default Albums;
