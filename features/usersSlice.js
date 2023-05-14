@@ -54,21 +54,21 @@ export const authSignUp = createAsyncThunk(
 
 export const authSignIn = createAsyncThunk(
   "auth/signin",
-  async ({ login, password }, thunkAPI) => {
+  async ({ firstName, password }, thunkAPI) => {
     try {
       const res = await fetch("http://192.168.1.99:3020/login", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ login, password }),
+        body: JSON.stringify({ firstName, password }),
       });
       const token = await res.json();
       if (token.error) {
         return thunkAPI.rejectWithValue(token.error);
       }
 
-      await AsyncStorage.setItem("token", token);
+      // await AsyncStorage.setItem("token", token);
 
       return token;
     } catch (error) {
@@ -107,8 +107,7 @@ const usersSlice = createSlice({
       .addCase(authSignIn.fulfilled, (state, action) => {
         state.signingIn = false;
         state.error = null;
-        state.token = action.payload;
-        state.name = action.payload;
+        state.token = action.payload.token;
       });
   },
 });

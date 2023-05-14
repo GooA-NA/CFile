@@ -32,12 +32,15 @@ const TextInputReg = styled.TextInput`
   font-size: 20px;
   border-bottom-width: 1px;
 `;
-const ViewBtnReg = styled.View`
+const ViewBtnReg = styled.TouchableOpacity`
   background-color: #23e8b3;
   box-shadow: 10px 10px 10px gray;
   margin-top: 30px;
-  padding: 5px;
+  padding: 10px;
+  width: 40%;
+  align-items: center;
   border-radius: 10px;
+  margin: 30px;
 `;
 
 const SignUp = ({ navigation }) => {
@@ -99,14 +102,14 @@ const SignUp = ({ navigation }) => {
           onChange={handlePassword}
         />
 
-        <ViewBtnReg>
-          <TouchableOpacity onPress={handleSubmit}>
+        
+          <ViewBtnReg onPress={handleSubmit}>
             <Text>Отправить</Text>
-          </TouchableOpacity>
-        </ViewBtnReg>
-        <ViewBtnReg>
+          </ViewBtnReg>
+        
+        {/* <ViewBtnReg>
           <Button title="Зарегестрироваться" color='white' onPress={() => navigation.navigate('Home')}  />
-        </ViewBtnReg>
+        </ViewBtnReg> */}
         <Button title="Уже есть аккаунт?" color="blue" onPress={() => navigation.navigate('SignIn') } />
       </FormReg>
 

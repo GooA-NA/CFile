@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useDispatch } from "react-redux";
-import { authSignUp } from "../features/usersSlice";
+import { authSignIn, authSignUp } from "../features/usersSlice";
 
 const Post = styled.SafeAreaView`
   flex: 1;
@@ -44,29 +44,25 @@ const SignIn = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
   const [password, setPassword] = useState("");
 
-  const dispatch = useDispatch()
-
-
+  const dispatch = useDispatch();
 
   function handleFirstName(e) {
     setFirstName(e.target.value);
   }
 
-
-
   function handlePassword(e) {
     setPassword(e.target.value);
   }
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault();
-    dispatch(authSignUp({ firstName, lastName, password, email }))
+    dispatch(authSignIn({ firstName, password }));
   }
 
   return (
     <Post>
       <FormReg>
-      <TextReg>Авторизация</TextReg>
+        <TextReg>Авторизация</TextReg>
 
         <TextInputReg
           onChangeText={setFirstName}
@@ -79,7 +75,6 @@ const SignIn = ({ navigation }) => {
           onChangeText={setPassword}
           value={password}
           placeholder="Password"
-          keyboardType="numeric"
           onChange={handlePassword}
         />
 
@@ -88,10 +83,18 @@ const SignIn = ({ navigation }) => {
             <Text>Отправить</Text>
           </TouchableOpacity>
         </ViewBtnReg>
-        <ViewBtnReg>
-          <Button title="Зарегестрироваться" color='white' onPress={() => navigation.navigate('Home')}  />
-        </ViewBtnReg>
-        <Button title="Нет аккаунта?" color="blue" onPress={() => navigation.navigate('SignUp') } />
+        {/* <ViewBtnReg>
+          <Button
+            title="Зарегестрироваться"
+            color="white"
+            onPress={() => navigation.navigate("Home")}
+          />
+        </ViewBtnReg> */}
+        <Button
+          title="Нет аккаунта?"
+          color="blue"
+          onPress={() => navigation.navigate("SignUp")}
+        />
       </FormReg>
 
       <StatusBar style="auto" />

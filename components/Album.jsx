@@ -30,7 +30,10 @@ const ViewIcon = styled.View`
 
 const Album = () => {
   const dispatch = useDispatch();
-  const userId = "645a26440bdb9cf8f26a3374";
+  
+  const token = useSelector((state) => state.usersSlice.token);
+
+  const userId = token._id;
 
   useEffect(() => {
     dispatch(getFiles({ userId }));

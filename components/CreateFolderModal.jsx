@@ -3,7 +3,7 @@ import { TextInput, Button, StyleSheet, Modal } from "react-native";
 import { SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import styled from "styled-components/native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addFiles } from "../features/filesSlice";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -34,7 +34,8 @@ const CreateFolderModal = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [name, setFolderName] = useState("");
 
-  const userId = "645a26440bdb9cf8f26a3374";
+  const token = useSelector((state) => state.usersSlice.token);
+  const userId = token._id
   const handleCreateFolder = () => {
     console.log(`Creating folder "${name}"...`);
     console.log('1');

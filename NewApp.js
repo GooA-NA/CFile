@@ -13,15 +13,15 @@ import { initializeToken } from "./features/usersSlice";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function HomeTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Homes" component={Home} />
-      <Tab.Screen name="Albums" component={Albums} />
-      <Tab.Screen name="Profile" component={Profile} />
-    </Tab.Navigator>
-  );
-}
+// function HomeTabs() {
+//   return (
+//     <Tab.Navigator>
+//       <Tab.Screen name="Homes" component={Home} />
+//       <Tab.Screen name="Albums" component={Albums} />
+//       <Tab.Screen name="Profile" component={Profile} />
+//     </Tab.Navigator>
+//   );
+// }
 
 const NewApp = () => {
   const token = useSelector((state) => state.usersSlice.token);
@@ -31,27 +31,27 @@ const NewApp = () => {
     dispatch(initializeToken());
   }, []);
   console.log(token, 'token');
-  // if (token) {
-  //   return (
-  //     <NavigationContainer>
-  //     <Tab.Navigator>
-  //       <Tab.Screen name="Home" component={Home} />
-  //       <Tab.Screen name="Albums" component={Albums} />
-  //       <Tab.Screen name="Profile" component={Profile} />
-  //     </Tab.Navigator>
-  //     </NavigationContainer>
-  //   );
-  // }
+  if (token) {
+    return (
+      <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Albums" component={Albums} />
+        <Tab.Screen name="Profile" component={Profile} />
+      </Tab.Navigator>
+      </NavigationContainer>
+    );
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Home"
           component={HomeTabs}
           options={{ headerShown: false }}
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
