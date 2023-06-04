@@ -32,12 +32,15 @@ const TextInputReg = styled.TextInput`
   font-size: 20px;
   border-bottom-width: 1px;
 `;
-const ViewBtnReg = styled.View`
+const ViewBtnReg = styled.TouchableOpacity`
   background-color: #23e8b3;
   box-shadow: 10px 10px 10px gray;
   margin-top: 30px;
-  padding: 5px;
+  padding: 10px;
+  width: 40%;
+  align-items: center;
   border-radius: 10px;
+  margin: 30px;
 `;
 
 const SignIn = ({ navigation }) => {

@@ -1,38 +1,19 @@
-import { Image, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import styled from "styled-components/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Button } from "react-native";
+import { ImageEditor } from "expo-image-editor";
 
 const SViewTop = styled.SafeAreaView`
   flex: 1;
   background-color: white;
 `;
-const ViewTop = styled.View`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  margin-top: 20px;
-`;
-const ViewHalfTop = styled.View`
-  background-color: white;
-  width: 50%;
-  margin-top: 10px;
-  border-radius: 20px;
-  padding: 10px;
-`;
-
-const TextTop = styled.Text`
-  font-size: 20px;
-  text-align: center;
-`;
 
 const ViewIcon = styled.View`
-  width: 100%;
-  height: 100%;
-  display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
 `;
@@ -44,10 +25,13 @@ const BorderDash = styled.View`
   padding: 10px;
   background-color: "#00FF00";
 `;
+const CorpImage = styled.Image`
+  width: 100%;
+  height: 80%;
+  object-fit: contain;
+`
 
 const Home = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
-
   useEffect(() => {
     (async () => {
       const { status } =
@@ -63,41 +47,51 @@ const Home = () => {
     })();
   }, []);
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const [imageUri, setImageUri] = useState(undefined);
+  const [editorVisible, setEditorVisible] = useState(false);
 
-    if (!result.canceled) {
-      setSelectedImage(result.assets);
+  const selectPhoto = async () => {
+    const response = await ImagePicker.requestCameraPermissionsAsync();
+    if (response.granted) {
+      const pickerResult = await ImagePicker.launchImageLibraryAsync();
+      if (!pickerResult.canceled) {
+        launchEditor(pickerResult.uri);
+      }
+    } else {
+      Alert.alert(
+        "Please enable camera roll permissions for this app in your settings."
+      );
     }
   };
 
   const takePicture = async () => {
-    let result = await ImagePicker.launchCameraAsync({
+    let pickerResult = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    if (!result.canceled) {
-      setSelectedImage(result.assets);
+    if (!pickerResult.canceled) {
+      launchEditor(pickerResult.uri);
     }
   };
 
+  const launchEditor = (uri) => {
+    setImageUri(uri);
+    setEditorVisible(true);
+  };
+
   const handleDeleteImage = () => {
-    setSelectedImage(null);
+    console.log(imageUri);
+    setImageUri(null);
   };
 
   return (
     <>
       <SViewTop>
         <ViewIcon>
-          {!selectedImage ? (
+          {!imageUri ? (
             <>
               <BorderDash>
                 <Ionicons
@@ -110,16 +104,14 @@ const Home = () => {
                 <Ionicons
                   name="images-outline"
                   size={150}
-                  onPress={pickImage}
+                  onPress={selectPhoto}
                 />
               </BorderDash>
             </>
           ) : (
             <>
-              <Image
-                source={{ uri: selectedImage[0].uri }}
-                style={{ width: "100%", height: 400 }}
-                resizeMode="contain"
+              <CorpImage
+                source={{ uri: imageUri.uri }}
               />
               <TouchableOpacity
                 style={styles.button}
@@ -131,14 +123,30 @@ const Home = () => {
           )}
         </ViewIcon>
       </SViewTop>
-
+      <View>
+        <ImageEditor
+          visible={editorVisible}
+          onCloseEditor={() => setEditorVisible(false)}
+          imageUri={imageUri}
+          fixedCropAspectRatio={16 / 9}
+          lockAspectRatio={false}
+          minimumCropDimensions={{
+            width: 100,
+            height: 100,
+          }}
+          onEditingComplete={(result) => {
+            setImageUri(result);
+          }}
+          mode="full"
+        />
+      </View>
       <StatusBar style="auto" />
     </>
   );
 };
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#FF8C00",
+    backgroundColor: "#ff0000",
     borderRadius: 10,
     padding: 10,
     width: "30%",
