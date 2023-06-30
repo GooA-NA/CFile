@@ -1,11 +1,11 @@
-import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import styled from "styled-components/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { Button } from "react-native";
 import { ImageEditor } from "expo-image-editor";
+import IonIcons from "@expo/vector-icons/Ionicons"
 
 const SViewTop = styled.SafeAreaView`
   flex: 1;
@@ -27,8 +27,26 @@ const BorderDash = styled.View`
 `;
 const CorpImage = styled.Image`
   width: 100%;
-  height: 80%;
+  height: 70%;
   object-fit: contain;
+`;
+const ButtonS = styled.TouchableOpacity`
+  width: 47%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 4px;
+  margin-top: 10px;
+  
+`
+const ContainerFBtn = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 `
 
 const Home = () => {
@@ -110,15 +128,32 @@ const Home = () => {
             </>
           ) : (
             <>
-              <CorpImage
-                source={{ uri: imageUri.uri }}
-              />
-              <TouchableOpacity
-                style={styles.button}
+              <CorpImage source={{ uri: imageUri.uri }} />
+              <ContainerFBtn>
+              <ButtonS
+                style={styles.red}
                 onPress={handleDeleteImage}
               >
-                <Text style={styles.buttonText}>Delete</Text>
-              </TouchableOpacity>
+                <Text style={styles.buttonText}>Удалить</Text>
+                <IonIcons name="trash-outline" color={"white"} size={30}></IonIcons>
+
+              </ButtonS>
+              <ButtonS
+                style={styles.blue}
+                onPress={handleDeleteImage}
+              >
+                <Text style={styles.buttonText}>Сохранить</Text>
+                <IonIcons name="save-outline" color={"white"} size={30}></IonIcons>
+
+              </ButtonS>
+              <ButtonS
+                style={styles.gray}
+                onPress={handleDeleteImage}
+              >
+                <Text style={styles.buttonText}>Поделиться</Text>
+                <IonIcons name="share-outline" color={"white"} size={30}></IonIcons>
+              </ButtonS>
+              </ContainerFBtn>
             </>
           )}
         </ViewIcon>
@@ -145,17 +180,20 @@ const Home = () => {
   );
 };
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#ff0000",
-    borderRadius: 10,
-    padding: 10,
-    width: "30%",
-    margin: 10,
+  red: {
+    backgroundColor: "red"
+  },
+  blue: {
+    backgroundColor: "blue"
+  },
+  gray: {
+    backgroundColor: "gray"
   },
   buttonText: {
+    flex: 1,
     color: "white",
     textAlign: "center",
-    fontSize: 24,
+    fontSize: 22,
   },
 });
 

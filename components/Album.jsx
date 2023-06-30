@@ -49,8 +49,8 @@ const Album = () => {
         {files ? (
           files.map((file, index) => {
             return (
-              <ViewIcon key={index}>
-                <Ionicons name="folder-outline" size={100} />
+              <ViewIcon key={index} >
+                <Ionicons name="folder-outline" size={100} color={"blue"}  />
                 <TextFiles> {file.name} </TextFiles>
                 
               </ViewIcon>

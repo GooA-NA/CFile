@@ -9,8 +9,6 @@ const SafeAVProfile = styled.SafeAreaView`
   background-color: white;
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 const TextInputReg = styled.Text`
   box-shadow: 15px 10px 4px black;
@@ -20,9 +18,15 @@ const TextInputReg = styled.Text`
   font-size: 20px;
   border-bottom-width: 1px;
 `;
-
+const ViewMenu = styled.SafeAreaView`
+  width: 100%;
+`;
+const ViewProfile = styled.SafeAreaView`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
 const Profile = () => {
-
   const token = useSelector((state) => state.usersSlice.token);
 
   const dispatch = useDispatch();
@@ -33,10 +37,15 @@ const Profile = () => {
 
   return (
     <SafeAVProfile>
-      <Ionicons name="person-circle-outline" size={50} />
-      <TextInputReg>{token.firstName}</TextInputReg>
-      <TextInputReg>{token.lastName}</TextInputReg>
-      <TextInputReg>{token.email}</TextInputReg>
+      <ViewMenu>
+        <Ionicons name="menu-outline" size={50} />
+      </ViewMenu>
+      <ViewProfile>
+        <Ionicons name="person-circle-outline" size={50} />
+        <TextInputReg>{token.firstName}</TextInputReg>
+        <TextInputReg>{token.lastName}</TextInputReg>
+        <TextInputReg>{token.email}</TextInputReg>
+      </ViewProfile>
       <StatusBar style="auto" />
     </SafeAVProfile>
   );

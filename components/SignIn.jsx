@@ -4,6 +4,7 @@ import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useDispatch } from "react-redux";
 import { authSignIn, authSignUp } from "../features/usersSlice";
+import { Alert } from "react-native";
 
 const Post = styled.SafeAreaView`
   flex: 1;
@@ -58,6 +59,10 @@ const SignIn = ({ navigation }) => {
   }
 
   function handleSubmit(e) {
+    if(!password || !firstName){
+      Alert.alert("Неверный формат", "Пожалуйста, заполните все поля")
+      return false
+    }
     e.preventDefault();
     dispatch(authSignIn({ firstName, password }));
   }

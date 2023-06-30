@@ -4,6 +4,7 @@ import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useDispatch } from "react-redux";
 import { authSignUp } from "../features/usersSlice";
+import { Alert } from "react-native";
 
 const Post = styled.SafeAreaView`
   flex: 1;
@@ -68,6 +69,10 @@ const SignUp = ({ navigation }) => {
   }
 
   function handleSubmit(e){
+    if(!email || !password || !firstName || !lastName){
+      Alert.alert("Неверный формат!", "Заполните все поля")
+      return false
+    }
     e.preventDefault();
     dispatch(authSignUp({ firstName, lastName, email, password }))
   }
