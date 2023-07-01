@@ -5,7 +5,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { ImageEditor } from "expo-image-editor";
-import IonIcons from "@expo/vector-icons/Ionicons"
+import IonIcons from "@expo/vector-icons/Ionicons";
+import * as Sharing from "expo-sharing";
+import { Alert } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { upload } from "../features/filesSlice";
 
 const SViewTop = styled.SafeAreaView`
   flex: 1;
@@ -31,25 +35,27 @@ const CorpImage = styled.Image`
   object-fit: contain;
 `;
 const ButtonS = styled.TouchableOpacity`
-  width: 47%;
+  width: 40%;
   display: flex;
   flex-direction: row;
   align-items: center;
   border-radius: 10px;
   padding: 10px;
   margin: 4px;
-  margin-top: 10px;
-  
-`
+  margin-top: 20px;
+`;
 const ContainerFBtn = styled.View`
   width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-`
+`;
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.usersSlice.token._id);
+
   useEffect(() => {
     (async () => {
       const { status } =
@@ -101,8 +107,22 @@ const Home = () => {
   };
 
   const handleDeleteImage = () => {
-    console.log(imageUri);
     setImageUri(null);
+  };
+
+  const handleShare = () => {
+    Sharing.shareAsync(imageUri.uri);
+  };
+
+  const handleSave = () => {
+    const filePath = imageUri.uri;
+    const fileName = filePath.split("/").pop(); // Извлекаем имя файла из пути
+    const file = new File([fileName], fileName, { type: "image/png" });
+    const dirId = "ds"
+    console.log(imageUri.uri);
+    dispatch(upload({userId, file, dirId}))
+    // Alert.alert("Файл успешно сохранен")
+    // setImageUri(null);
   };
 
   return (
@@ -130,29 +150,30 @@ const Home = () => {
             <>
               <CorpImage source={{ uri: imageUri.uri }} />
               <ContainerFBtn>
-              <ButtonS
-                style={styles.red}
-                onPress={handleDeleteImage}
-              >
-                <Text style={styles.buttonText}>Удалить</Text>
-                <IonIcons name="trash-outline" color={"white"} size={30}></IonIcons>
-
-              </ButtonS>
-              <ButtonS
-                style={styles.blue}
-                onPress={handleDeleteImage}
-              >
-                <Text style={styles.buttonText}>Сохранить</Text>
-                <IonIcons name="save-outline" color={"white"} size={30}></IonIcons>
-
-              </ButtonS>
-              <ButtonS
-                style={styles.gray}
-                onPress={handleDeleteImage}
-              >
-                <Text style={styles.buttonText}>Поделиться</Text>
-                <IonIcons name="share-outline" color={"white"} size={30}></IonIcons>
-              </ButtonS>
+                <ButtonS style={styles.red} onPress={handleDeleteImage}>
+                  <Text style={styles.buttonText}>Удалить</Text>
+                  <IonIcons
+                    name="trash-outline"
+                    color={"white"}
+                    size={20}
+                  ></IonIcons>
+                </ButtonS>
+                <ButtonS style={styles.blue} onPress={handleSave}>
+                  <Text style={styles.buttonText}>Сохранить</Text>
+                  <IonIcons
+                    name="save-outline"
+                    color={"white"}
+                    size={20}
+                  ></IonIcons>
+                </ButtonS>
+                <ButtonS style={styles.gray} onPress={handleShare}>
+                  <Text style={styles.buttonText}>Поделиться</Text>
+                  <IonIcons
+                    name="share-outline"
+                    color={"white"}
+                    size={20}
+                  ></IonIcons>
+                </ButtonS>
               </ContainerFBtn>
             </>
           )}
@@ -181,19 +202,19 @@ const Home = () => {
 };
 const styles = StyleSheet.create({
   red: {
-    backgroundColor: "red"
+    backgroundColor: "red",
   },
   blue: {
-    backgroundColor: "blue"
+    backgroundColor: "blue",
   },
   gray: {
-    backgroundColor: "gray"
+    backgroundColor: "gray",
   },
   buttonText: {
     flex: 1,
     color: "white",
     textAlign: "center",
-    fontSize: 22,
+    fontSize: 20,
   },
 });
 

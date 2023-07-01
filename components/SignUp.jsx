@@ -50,7 +50,7 @@ const SignUp = ({ navigation }) => {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   function handleEamil(e) {
     setEmail(e.target.value);
@@ -68,13 +68,13 @@ const SignUp = ({ navigation }) => {
     setPassword(e.target.value);
   }
 
-  function handleSubmit(e){
-    if(!email || !password || !firstName || !lastName){
-      Alert.alert("Неверный формат!", "Заполните все поля")
-      return false
+  function handleSubmit(e) {
+    if (!email || !password || !firstName || !lastName) {
+      Alert.alert("Неверный формат!", "Заполните все поля");
+      return false;
     }
     e.preventDefault();
-    dispatch(authSignUp({ firstName, lastName, email, password }))
+    dispatch(authSignUp({ firstName, lastName, email, password }));
   }
 
   return (
@@ -107,15 +107,15 @@ const SignUp = ({ navigation }) => {
           onChange={handlePassword}
         />
 
-        
-          <ViewBtnReg onPress={handleSubmit}>
-            <Text>Отправить</Text>
-          </ViewBtnReg>
-        
-        {/* <ViewBtnReg>
-          <Button title="Зарегестрироваться" color='white' onPress={() => navigation.navigate('Home')}  />
-        </ViewBtnReg> */}
-        <Button title="Уже есть аккаунт?" color="blue" onPress={() => navigation.navigate('SignIn') } />
+        <ViewBtnReg onPress={handleSubmit}>
+          <Text style={{ color: "white" }}>Отправить</Text>
+        </ViewBtnReg>
+
+        <Button
+          title="Уже есть аккаунт?"
+          color="blue"
+          onPress={() => navigation.navigate("SignIn")}
+        />
       </FormReg>
 
       <StatusBar style="auto" />

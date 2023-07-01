@@ -8,7 +8,7 @@ export const addFiles = createAsyncThunk(
   "add/files",
   async ({ name, userId }, thunkAPI) => {
     try {
-      const res = await fetch("http://192.168.1.99:3020", {
+      const res = await fetch("http://192.168.0.117:3020", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export const getFiles = createAsyncThunk(
   "get/files",
   async ({ userId }, thunkAPI) => {
     try {
-      const res = await fetch("http://192.168.1.99:3020/getFiles", {
+      const res = await fetch("http://192.168.0.117:3020/getFiles", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,6 +47,29 @@ export const getFiles = createAsyncThunk(
     } catch (e) {
       console.log(e);
       thunkAPI.rejectWithValue(e);
+    }
+  }
+);
+export const upload = createAsyncThunk(
+  "post/upload",
+  async ({ file, userId, dirId }, thunkAPI) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch(`http://192.168.0.117:3020/upload/${userId}`, {
+        method: "POST",
+        body: formData,
+      });
+      const json = await res.json();
+      if (json.error) {
+        return thunkAPI.rejectWithValue(json.error);
+      }
+
+      return json;
+    } catch (e) {
+      console.log(e, "faac");
+      return thunkAPI.rejectWithValue(e);
     }
   }
 );

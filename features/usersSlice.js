@@ -24,7 +24,7 @@ export const authSignUp = createAsyncThunk(
   async ({ firstName, lastName, email, password }, thunkAPI) => {
     try {
       console.log('1');
-      const res = await fetch("http://192.168.1.99:3020/user", {
+      const res = await fetch("http://192.168.0.117:3020/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export const authSignIn = createAsyncThunk(
   "auth/signin",
   async ({ firstName, password }, thunkAPI) => {
     try {
-      const res = await fetch("http://192.168.1.99:3020/login", {
+      const res = await fetch("http://192.168.0.117:3020/login", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
