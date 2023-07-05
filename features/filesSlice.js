@@ -8,7 +8,7 @@ export const addFiles = createAsyncThunk(
   "add/files",
   async ({ name, userId }, thunkAPI) => {
     try {
-      const res = await fetch("http://192.168.0.117:3020", {
+      const res = await fetch("http://192.168.0.118:3020", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export const getFiles = createAsyncThunk(
   "get/files",
   async ({ userId }, thunkAPI) => {
     try {
-      const res = await fetch("http://192.168.0.117:3020/getFiles", {
+      const res = await fetch("http://192.168.0.118:3020/getFiles", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,12 +52,10 @@ export const getFiles = createAsyncThunk(
 );
 export const upload = createAsyncThunk(
   "post/upload",
-  async ({ file, userId, dirId }, thunkAPI) => {
+  async ({ formData, userId }, thunkAPI) => {
     try {
-      const formData = new FormData();
-      formData.append("file", file);
 
-      const res = await fetch(`http://192.168.0.117:3020/upload/${userId}`, {
+      const res = await fetch(`http://192.168.0.118:3020/upload/${userId}`, {
         method: "POST",
         body: formData,
       });
@@ -81,7 +79,6 @@ const filesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getFiles.fulfilled, (state, action) => {
-        console.log(action.payload.files, 'ooo daaa');
         state.files = action.payload.files;
       })
       .addCase(addFiles.fulfilled, (state, action) => {

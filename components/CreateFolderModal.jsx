@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { TextInput, Button, StyleSheet, Modal } from "react-native";
-import { SafeAreaView } from "react-native";
+import { Button, Modal } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import styled from "styled-components/native";
 import { useDispatch, useSelector } from "react-redux";
 import { addFiles } from "../features/filesSlice";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
 
 const ModalScreen = styled.SafeAreaView`
   margin-top: 10px;
@@ -30,28 +28,32 @@ const TextInputModal = styled.TextInput`
 `;
 
 const CreateFolderModal = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [name, setFolderName] = useState("");
 
   const token = useSelector((state) => state.usersSlice.token);
-  const userId = token._id
+  const userId = token._id;
   const handleCreateFolder = () => {
     console.log(`Creating folder "${name}"...`);
-    console.log('1');
+    console.log("1");
     // отправляйте запрос на создание папки на сервере
-    dispatch(addFiles({name, userId}))
+    dispatch(addFiles({ name, userId }));
     setIsModalVisible(false);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  
 
   return (
     <ModalScreen>
-      <Ionicons size={100} color={"#74b1eb"} name="add-circle-outline" onPress={() => setIsModalVisible(true)} />
+      <Ionicons
+        size={100}
+        color={"#74b1eb"}
+        name="add-circle-outline"
+        onPress={() => setIsModalVisible(true)}
+      />
       <Modal visible={isModalVisible}>
         <ModalView>
           <TextInputModal

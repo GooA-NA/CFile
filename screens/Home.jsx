@@ -8,8 +8,7 @@ import { ImageEditor } from "expo-image-editor";
 import IonIcons from "@expo/vector-icons/Ionicons";
 import * as Sharing from "expo-sharing";
 import { Alert } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { upload } from "../features/filesSlice";
+import SaveFile from "../components/SaveFile";
 
 const SViewTop = styled.SafeAreaView`
   flex: 1;
@@ -53,8 +52,6 @@ const ContainerFBtn = styled.View`
 `;
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const userId = useSelector((state) => state.usersSlice.token._id);
 
   useEffect(() => {
     (async () => {
@@ -71,14 +68,18 @@ const Home = () => {
     })();
   }, []);
 
+  const [defUri, setDefUri] = useState(null);
   const [imageUri, setImageUri] = useState(undefined);
   const [editorVisible, setEditorVisible] = useState(false);
+  const [modalVis, setModalVis] = useState(false);
 
   const selectPhoto = async () => {
     const response = await ImagePicker.requestCameraPermissionsAsync();
     if (response.granted) {
       const pickerResult = await ImagePicker.launchImageLibraryAsync();
       if (!pickerResult.canceled) {
+        console.log(pickerResult, "Its a trap");
+        setDefUri(pickerResult.uri);
         launchEditor(pickerResult.uri);
       }
     } else {
@@ -97,10 +98,12 @@ const Home = () => {
     });
 
     if (!pickerResult.canceled) {
+      console.log(pickerResult, "Its a trap2");
+      setDefUri(pickerResult.uri);
       launchEditor(pickerResult.uri);
     }
   };
-
+  
   const launchEditor = (uri) => {
     setImageUri(uri);
     setEditorVisible(true);
@@ -115,14 +118,9 @@ const Home = () => {
   };
 
   const handleSave = () => {
-    const filePath = imageUri.uri;
-    const fileName = filePath.split("/").pop(); // Извлекаем имя файла из пути
-    const file = new File([fileName], fileName, { type: "image/png" });
-    const dirId = "ds"
-    console.log(imageUri.uri);
-    dispatch(upload({userId, file, dirId}))
-    // Alert.alert("Файл успешно сохранен")
-    // setImageUri(null);
+    console.log('1');
+    setModalVis(true)
+
   };
 
   return (
@@ -196,6 +194,7 @@ const Home = () => {
           mode="full"
         />
       </View>
+      <SaveFile mVisible={modalVis} defUri={defUri} setMVis={setModalVis} setImageUri={setImageUri} />
       <StatusBar style="auto" />
     </>
   );
